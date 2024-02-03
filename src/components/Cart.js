@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, incrementQuantity, decrementQuantity } from '../redux/Action';
 import WithNavbar from './WithNavbar';
 import Popup from './Popup';
+import MyImage from '../assets/dog.png';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -29,32 +30,41 @@ const Cart = () => {
   const closePopup = () => {
     setPopupVisible(false);
   };
+
   return (
     <div className="mt-40 mb-40 ml-10 mr-10">
-      
-      <div>
-        {cart.map((product) => (
-          <div key={product.id} className="flex border-4 p-8  items-center mb-10 justify-between">
-            <img src={product.thumbnail} alt={product.title} className="w-20 h-auto mr-4" />
-            <div className='ml-60'>
-              <p className="text-gray-500 capitalize mb-3">{product.title}</p>
-              <div className="flex items-center">
-                <button onClick={() => handleDecrement(product)} className="bg-blue-500 text-white p-2 rounded">
-                  -
-                </button>
-                <span className="mx-2 text-lg">{product.quantity}</span>
-                <button onClick={() => handleIncrement(product)} className="bg-blue-500 text-white p-2 rounded">
-                  +
-                </button>
-              </div>
-            </div>
-            <div className="ml-auto">${(product.price * product.quantity).toFixed(2)}</div>
-            <button onClick={() => handleRemove(product)} className="ml-4 text-red-500">
-              Remove
-            </button>
-          </div>
-        ))}
+      {cart.length === 0 ? (
+        <div className="flex items-center justify-center h-screen">
+        <div className="text-center font-bold text-gray-500">
+          Cart is empty
+          <img src={MyImage} alt="My Image" className="w-50 h-60 object-cover object-center mx-auto" />
+        </div>
       </div>
+      ) : (
+        <div>
+          {cart.map((product) => (
+            <div key={product.id} className="flex border-4 p-8  items-center mb-10 justify-between">
+              <img src={product.thumbnail} alt={product.title} className="w-20 h-auto mr-4" />
+              <div className='ml-60'>
+                <p className="text-gray-500 capitalize mb-3">{product.title}</p>
+                <div className="flex items-center">
+                  <button onClick={() => handleDecrement(product)} className="bg-blue-500 text-white p-2 rounded">
+                    -
+                  </button>
+                  <span className="mx-2 text-lg">{product.quantity}</span>
+                  <button onClick={() => handleIncrement(product)} className="bg-blue-500 text-white p-2 rounded">
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="ml-auto">${(product.price * product.quantity).toFixed(2)}</div>
+              <button onClick={() => handleRemove(product)} className="ml-4 text-red-500">
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="bg-gray-800 text-white p-4 fixed bottom-0 left-0 w-full flex justify-between">
         <div>Total Amount: ${cart.reduce((total, product) => total + product.price * product.quantity, 0).toFixed(2)}</div>

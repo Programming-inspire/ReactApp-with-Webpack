@@ -1,4 +1,3 @@
-// Products.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -23,19 +22,21 @@ const Products = () => {
       .then((response) => response.json())
       .then((data) => {
         const productsArray = Array.isArray(data.products) ? data.products : [];
+        console.log(productsArray);
         setProducts(productsArray);
         const uniqueCategories = [...new Set(productsArray.map((product) => product.category))];
+        console.log(uniqueCategories);
         setCategories(['All', ...uniqueCategories]);
       })
       .catch((error) => console.error('Error fetching products:', error));
   }, []);
 
-  // Filter products based on the global search term
+  
   const filteredProducts = products.filter(
     (product) =>
       (selectedCategory === 'All' || product.category === selectedCategory) &&
-      product.title && // Check if product.title is defined
-      product.title.toLowerCase().includes(globalSearchTerm.toLowerCase())
+      product.title && 
+      product.title.toLowerCase().startsWith(globalSearchTerm.toLowerCase())
   );
 
   return (
@@ -55,7 +56,7 @@ const Products = () => {
         </div>
       )}
 
-      {/* Display product cards or a message */}
+      {/* Display product cards*/}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredProducts.length === 0 ? (
           <div className="text-center font-bold text-gray-500 mt-8">

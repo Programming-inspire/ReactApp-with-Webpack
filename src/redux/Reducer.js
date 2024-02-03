@@ -37,7 +37,7 @@ export const cartReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSearchTerm, (state, action) => {
       state.searchTerm = action.payload;
-    }); // Add this block
+    }); 
 });
 
 
